@@ -245,12 +245,13 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 - (void)pickerCollectionViewDidCameraSelect:(LGPhotoPickerCollectionView *)pickerCollectionView{
     
-    
     UIImagePickerController *ctrl = [[UIImagePickerController alloc] init];
     ctrl.delegate = self;
     ctrl.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:ctrl animated:YES completion:nil];
 }
+
+#pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
@@ -258,6 +259,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         // 处理
         UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
         
+        // FIX: 应该加入LGPhotoAssets类型，不应该加入UIImage类型
         [self.assets addObject:image];
         [self.selectAssets addObject:image];
         [self.takePhotoImages addObject:image];
@@ -377,7 +379,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     LGPhotoPickerBrowserPhoto *photo = [LGPhotoPickerBrowserPhoto photoAnyImageObjWith:imageObj];
     
     LGPhotoPickerCollectionViewCell *cell = (LGPhotoPickerCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    photo.thumbImage = cell.cellImage;
+    photo.thumbImage = cell.imageView.image;
     
     return photo;
 }

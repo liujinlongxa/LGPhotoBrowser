@@ -88,7 +88,7 @@ LGPhotoPickerCollectionViewCellDelegate
 
     LGPhotoPickerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoCollectionCellIdentifier forIndexPath:indexPath];
     cell.delegate = self;
- 
+
     [self setupPickerImageViewOnCell:cell AtIndex:indexPath];
     
     return cell;
@@ -107,7 +107,7 @@ LGPhotoPickerCollectionViewCellDelegate
         return ;
     }
     
-    if (cell.selected) {
+    if (cell.photoSelected) {
         // 取消选中
         if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidDeselected:deselectedAsset:)]) {
             [self.collectionViewDelegate pickerCollectionViewDidDeselected:self deselectedAsset:asset];
@@ -141,8 +141,15 @@ LGPhotoPickerCollectionViewCellDelegate
 
 #pragma mark - <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionCellTouchedIndexPath:)]) {
-        [self.collectionViewDelegate pickerCollectionCellTouchedIndexPath:indexPath];
+    
+    if (self.configuration.showImageBorwser) {
+        if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionCellTouchedIndexPath:)]) {
+            [self.collectionViewDelegate pickerCollectionCellTouchedIndexPath:indexPath];
+        }
+    }
+    else {
+        LGPhotoPickerCollectionViewCell *cell = (LGPhotoPickerCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+        [self photoPickerCollectionViewCell:cell didSelectImage:cell.imageView.image];
     }
 }
 

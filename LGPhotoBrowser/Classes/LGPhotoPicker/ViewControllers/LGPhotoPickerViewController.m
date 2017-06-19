@@ -12,6 +12,7 @@
 @interface LGPhotoPickerViewController ()
 
 @property (nonatomic , strong) LGPhotoPickerGroupViewController *groupVc;
+
 //是否发送原图，1 原图 0 压缩过图
 @property (nonatomic, assign) BOOL isOriginal;
 
@@ -53,41 +54,10 @@
     [self.view addSubview:nav.view];
 }
 
-//- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
-//    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-//        [self createNavigationController];
-//    }
-//    return self;
-//}
-
 - (void)setSelectPickers:(NSArray *)selectPickers{
     _selectPickers = selectPickers;
     self.groupVc.selectAsstes = [selectPickers mutableCopy];
 }
-//
-//- (void)setStatus:(PickerViewShowStatus)status{
-//    _status = status;
-//    self.groupVc.status = status;
-//}
-
-//- (void)setMaxCount:(NSInteger)maxCount{
-//    if (maxCount <= 0) return;
-//    _maxCount = maxCount;
-//    self.groupVc.maxCount = maxCount;
-//}
-
-//- (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{
-//    _topShowPhotoPicker = topShowPhotoPicker;
-//    self.groupVc.topShowPhotoPicker = topShowPhotoPicker;
-//}
-
-//#pragma mark - 展示控制器
-//- (void)showPickerVc:(UIViewController *)vc{
-//    __weak typeof(vc) weakVc = vc;
-//    if (weakVc != nil) {
-//        [weakVc presentViewController:self animated:YES completion:nil];
-//    }
-//}
 
 - (void) addNotification{
     // 监听异步done通知

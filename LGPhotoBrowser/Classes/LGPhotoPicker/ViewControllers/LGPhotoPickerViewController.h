@@ -43,7 +43,4 @@ typedef void(^LGcallBackBlock)(id obj);
  */
 - (instancetype)initWithConfiguration:(LGPhotoPickerConfiguration *)configuration;
 
-// 展示控制器
-//- (void)showPickerVc:(UIViewController *)vc;
-
 @end

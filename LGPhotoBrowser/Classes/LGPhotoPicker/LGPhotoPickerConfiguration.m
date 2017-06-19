@@ -16,6 +16,7 @@
     instance.showCameraButton = NO;
     instance.maxSelectCount = 9;
     instance.showAlbum = LGPickerViewShowAlbumCameraRoll;
+    instance.showImageBorwser = YES;
     return instance;
 }
 

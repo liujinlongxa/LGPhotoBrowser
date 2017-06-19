@@ -89,13 +89,12 @@
     configuration.maxSelectCount = 9;
     configuration.showType = style;
     configuration.showAlbum = LGPickerViewShowAlbumCameraRoll;
+    configuration.showImageBorwser = NO;
+    
     LGPhotoPickerViewController *pickerVc = [[LGPhotoPickerViewController alloc] initWithConfiguration:configuration];
-
-//    pickerVc.maxCount = 9;   // 最多能选9张图片
     pickerVc.delegate = self;
     self.showType = style;
     [self presentViewController:pickerVc animated:YES completion:nil];
-//    [pickerVc showPickerVc:self];
 }
 
 /**

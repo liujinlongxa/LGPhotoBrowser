@@ -18,8 +18,14 @@
 @interface LGPhotoPickerCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, weak) id<LGPhotoPickerCollectionViewCellDelegate> delegate;
-@property (nonatomic , strong) UIImage *cellImage;
+
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+
+
+/**
+ 是否选中
+ */
+@property (nonatomic, assign, getter=isPhotoSelected) BOOL photoSelected;
 
 /**
  标示选中

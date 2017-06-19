@@ -47,4 +47,10 @@
  */
 @property (nonatomic, assign) LGPickerViewShowAlbum showAlbum;
 
+
+/**
+ 是否显示图片浏览器，如果不显示图片浏览器则点击图片会选中图片，否则进入图片浏览器。默认为YES。
+ */
+@property (nonatomic, assign) BOOL showImageBorwser;
+
 @end

@@ -27,13 +27,13 @@ static NSString *const _cellIdentifier = @"cell";
 }
 
 - (void)selectedWithNumber:(NSInteger)number {
-    self.selected = YES;
+    self.photoSelected = YES;
     self.selectTagLabel.text = [NSString stringWithFormat:@"%@", @(number)];
     [self setupSelectedUI];
 }
 
 - (void)deselected {
-    self.selected = NO;
+    self.photoSelected = NO;
     self.selectTagLabel.text = @"";
     [self setupNormalUI];
 }
