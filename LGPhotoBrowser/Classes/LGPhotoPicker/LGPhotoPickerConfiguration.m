@@ -15,6 +15,7 @@
     instance.showFooterView = YES;
     instance.showCameraButton = NO;
     instance.maxSelectCount = 9;
+    instance.showAlbum = LGPickerViewShowAlbumCameraRoll;
     return instance;
 }
 

@@ -174,7 +174,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         layout.itemSize = CGSizeMake(cellW, cellW);
         layout.minimumInteritemSpacing = 0;
         layout.minimumLineSpacing = CELL_LINE_MARGIN;
-        layout.footerReferenceSize = CGSizeMake(self.view.frame.size.width, TOOLBAR_HEIGHT * 2);
+
         
         LGPhotoPickerCollectionView *collectionView = [[LGPhotoPickerCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout configuraiton:self.configuration];
         // 时间置顶

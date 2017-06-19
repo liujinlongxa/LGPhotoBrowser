@@ -15,12 +15,15 @@
 #import <objc/runtime.h>
 #import "LGPhotoPickerConfiguration.h"
 
+#define kPhotoPickerCollectionViewFootterHeight 88
+
 static NSString *const kPhotoCollectionCellIdentifier = @"kPhotoCollectionCellIdentifier";
 
 @interface LGPhotoPickerCollectionView ()
 <
 UICollectionViewDataSource,
 UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
 LGPhotoPickerCollectionViewCellDelegate
 >
 
@@ -105,7 +108,7 @@ LGPhotoPickerCollectionViewCellDelegate
     }
     
     if (cell.selected) {
-        
+        // 取消选中
         if ([self.collectionViewDelegate respondsToSelector:@selector(pickerCollectionViewDidDeselected:deselectedAsset:)]) {
             [self.collectionViewDelegate pickerCollectionViewDidDeselected:self deselectedAsset:asset];
         }
@@ -114,7 +117,7 @@ LGPhotoPickerCollectionViewCellDelegate
         [self reloadData];
     }
     else {
-        
+        // 选中
         NSArray *selectedAssests = [self.collectionViewDelegate selectedAssestsForPhotoPickerCollectionView:self];
         NSUInteger maxCount = (self.configuration.maxSelectCount < 0) ? KPhotoShowMaxCount :  self.configuration.maxSelectCount;
         if (selectedAssests.count >= maxCount) {
@@ -152,13 +155,20 @@ LGPhotoPickerCollectionViewCellDelegate
         footerView.count = self.dataArray.count;
         reusableView = footerView;
         self.footerView = footerView;
-        if (!self.configuration.showFooterView) {
-            self.footerView.hidden = YES;
-        }
     }
 
     return reusableView;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    if (!self.configuration.showFooterView) {
+        return CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), 0);
+    }
+    else {
+        return CGSizeMake(CGRectGetWidth([UIScreen mainScreen].bounds), kPhotoPickerCollectionViewFootterHeight);
+    }
+}
+
 
 #pragma mark - Setter and Getter
 - (void)setDataArray:(NSArray *)dataArray {
