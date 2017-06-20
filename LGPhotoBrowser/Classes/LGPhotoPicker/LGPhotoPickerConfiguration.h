@@ -25,7 +25,7 @@
 
 
 /**
- 是否显示相机按钮，默认不显示
+ 是否显示相机按钮，默认不显示，暂未实现
  */
 @property (nonatomic, assign) BOOL showCameraButton;
 
