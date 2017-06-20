@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3B1C22411EF76BCD001EFB74 /* LGPhotoPickerConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B1C22401EF76BCD001EFB74 /* LGPhotoPickerConfiguration.m */; };
 		3B49290F1EF2733B00981975 /* LGPhotoPickerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B49290E1EF2733B00981975 /* LGPhotoPickerCollectionViewCell.xib */; };
+		3B65BC791EF7DE8B0078192D /* LGPhotoPickerToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B65BC781EF7DE8B0078192D /* LGPhotoPickerToolBar.m */; };
+		3B65BC7B1EF7DE9B0078192D /* LGPhotoPickerToolBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B65BC7A1EF7DE9B0078192D /* LGPhotoPickerToolBar.xib */; };
 		440C6AE71BF1925A006A03B0 /* LGCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 440C6ADE1BF1925A006A03B0 /* LGCameraImageView.m */; };
 		440C6AE81BF1925A006A03B0 /* ZLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 440C6AE01BF1925A006A03B0 /* ZLCamera.m */; };
 		440C6AE91BF1925A006A03B0 /* ZLCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 440C6AE21BF1925A006A03B0 /* ZLCameraImageView.m */; };
@@ -92,6 +94,9 @@
 		3B1C223F1EF76BCD001EFB74 /* LGPhotoPickerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPhotoPickerConfiguration.h; sourceTree = "<group>"; };
 		3B1C22401EF76BCD001EFB74 /* LGPhotoPickerConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPhotoPickerConfiguration.m; sourceTree = "<group>"; };
 		3B49290E1EF2733B00981975 /* LGPhotoPickerCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGPhotoPickerCollectionViewCell.xib; sourceTree = "<group>"; };
+		3B65BC771EF7DE8B0078192D /* LGPhotoPickerToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPhotoPickerToolBar.h; sourceTree = "<group>"; };
+		3B65BC781EF7DE8B0078192D /* LGPhotoPickerToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPhotoPickerToolBar.m; sourceTree = "<group>"; };
+		3B65BC7A1EF7DE9B0078192D /* LGPhotoPickerToolBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGPhotoPickerToolBar.xib; sourceTree = "<group>"; };
 		440C6ADD1BF1925A006A03B0 /* LGCameraImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGCameraImageView.h; sourceTree = "<group>"; };
 		440C6ADE1BF1925A006A03B0 /* LGCameraImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGCameraImageView.m; sourceTree = "<group>"; };
 		440C6ADF1BF1925A006A03B0 /* ZLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCamera.h; sourceTree = "<group>"; };
@@ -473,6 +478,9 @@
 				44290B621BDF0F16003D6E79 /* LGPhotoPickerGroupTableViewCell.m */,
 				44290B631BDF0F16003D6E79 /* LGPhotoPickerImageView.h */,
 				44290B641BDF0F16003D6E79 /* LGPhotoPickerImageView.m */,
+				3B65BC771EF7DE8B0078192D /* LGPhotoPickerToolBar.h */,
+				3B65BC781EF7DE8B0078192D /* LGPhotoPickerToolBar.m */,
+				3B65BC7A1EF7DE9B0078192D /* LGPhotoPickerToolBar.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -626,6 +634,7 @@
 				440C6AFB1BF19EAC006A03B0 /* paizhao@2x.png in Resources */,
 				440C6AF31BF19E2F006A03B0 /* shanguangdeng2@2x.png in Resources */,
 				3B49290F1EF2733B00981975 /* LGPhotoPickerCollectionViewCell.xib in Resources */,
+				3B65BC7B1EF7DE9B0078192D /* LGPhotoPickerToolBar.xib in Resources */,
 				44290BD11BDF9095003D6E79 /* checkbox_pic2@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,6 +687,7 @@
 				44290BAC1BDF0F16003D6E79 /* LGPhotoPickerGroupTableViewCell.m in Sources */,
 				44290B0A1BDF0E3D003D6E79 /* main.m in Sources */,
 				440C6AEB1BF1925A006A03B0 /* ZLCameraViewController.m in Sources */,
+				3B65BC791EF7DE8B0078192D /* LGPhotoPickerToolBar.m in Sources */,
 				440CC5041C392C9C0010FD30 /* UIImageView+WebCache.m in Sources */,
 				440CC5021C392C9C0010FD30 /* UIImage+MultiFormat.m in Sources */,
 				440CC5001C392C9C0010FD30 /* UIButton+WebCache.m in Sources */,

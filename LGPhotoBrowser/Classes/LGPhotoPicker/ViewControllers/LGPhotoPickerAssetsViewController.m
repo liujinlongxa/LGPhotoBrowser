@@ -13,11 +13,12 @@
 #import "LGPhotoPickerCollectionViewCell.h"
 #import "LGPhotoPickerFooterCollectionReusableView.h"
 #import "LGPhotoPickerConfiguration.h"
+#import "LGPhotoPickerToolBar.h"
 
 static CGFloat CELL_ROW = 4;
 static CGFloat CELL_MARGIN = 2;
 static CGFloat CELL_LINE_MARGIN = 2;
-static CGFloat TOOLBAR_HEIGHT = 44;
+static CGFloat TOOLBAR_HEIGHT = 50;
 
 static NSString *const _cellIdentifier = @"cell";
 static NSString *const _footerIdentifier = @"FooterView";
@@ -28,10 +29,10 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 // 相片View
 @property (nonatomic , strong) LGPhotoPickerCollectionView *collectionView;
 // 标记View
-@property (nonatomic, weak) UILabel *makeView;
+@property (nonatomic, weak)   UILabel *makeView;
 @property (nonatomic, strong) UIButton *sendBtn;
 @property (nonatomic, strong) UIButton *previewBtn;
-@property (nonatomic, weak) UIToolbar *toolBar;
+@property (nonatomic, weak)   LGPhotoPickerToolBar *toolBar;
 @property (nonatomic, assign) NSUInteger privateTempMaxCount;
 @property (nonatomic, strong) NSMutableArray *assets;
 @property (nonatomic, strong) NSMutableArray<__kindof LGPhotoAssets*> *selectAssets;
@@ -47,10 +48,26 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 
 @implementation LGPhotoPickerAssetsViewController
 
-#pragma mark - dealloc
+#pragma mark - circle life
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.view.bounds = [UIScreen mainScreen].bounds;
+    self.view.backgroundColor = [UIColor whiteColor];
+    // 获取相册
+    [self setupAssets];
+    
+    [self addNavBarCancelButton];
+    // 初始化底部ToorBar
+    [self setupToorBar];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.collectionView reloadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
     // 赋值给上一个控制器,以便记录上次选择的照片
     if (self.selectedAssetsBlock) {
         self.selectedAssetsBlock(self.selectAssets);
@@ -64,8 +81,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     return self;
 }
 
-#pragma mark - getter
-#pragma mark Get Data
+
+#pragma mark - Getter and Setter
 
 - (NSMutableArray *)selectAssets{
     if (!_selectAssets) {
@@ -81,69 +98,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     return _takePhotoImages;
 }
 
-#pragma mark Get View
-- (UIButton *)sendBtn{
-    if (!_sendBtn) {
-        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [rightBtn setTitleColor:[UIColor colorWithRed:0x45 green:0x9a blue:0x00 alpha:1] forState:UIControlStateNormal];
-        [rightBtn setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-        rightBtn.enabled = YES;
-        rightBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-        rightBtn.frame = CGRectMake(0, 0, 60, 45);
-        NSString *title = [NSString stringWithFormat:@"发送(%d)",0];
-        [rightBtn setTitle:title forState:UIControlStateNormal];
-        [rightBtn addTarget:self action:@selector(sendBtnTouched) forControlEvents:UIControlEventTouchUpInside];
-        self.sendBtn = rightBtn;
-    }
-    return _sendBtn;
-}
-
-- (UIButton *)previewBtn
-{
-    if (!_previewBtn) {
-        UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [leftBtn setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-        leftBtn.enabled = YES;
-        leftBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-        leftBtn.frame = CGRectMake(0, 0, 45, 45);
-        [leftBtn setTitle:@"预览" forState:UIControlStateNormal];
-        [leftBtn addTarget:self action:@selector(previewBtnTouched) forControlEvents:UIControlEventTouchUpInside];
-        self.previewBtn = leftBtn;
-    }
-    return _previewBtn;
-}
-
-- (void)previewBtnTouched
-{
-    [self setupPhotoBrowserInCasePreview:YES CurrentIndexPath:0];
-}
-
-/**
- *  跳转照片浏览器
- *
- *  @param preview YES - 从‘预览’按钮进去，浏览器显示的时被选中的照片
- *                  NO - 点击cell进去，浏览器显示所有照片
- *  @param CurrentIndexPath 进入浏览器后展示图片的位置
- */
-- (void) setupPhotoBrowserInCasePreview:(BOOL)preview
-                       CurrentIndexPath:(NSIndexPath *)indexPath{
-    
-    self.isPreview = preview;
-    // 图片游览器
-    LGPhotoPickerBrowserViewController *pickerBrowser = [[LGPhotoPickerBrowserViewController alloc] init];
-    pickerBrowser.showType = self.configuration.showType;
-    pickerBrowser.delegate = self;
-    pickerBrowser.dataSource = self;
-    pickerBrowser.maxCount = self.configuration.maxSelectCount;
-    pickerBrowser.isOriginal = self.isOriginal;
-    pickerBrowser.selectedAssets = [self.selectAssets mutableCopy];
-    pickerBrowser.editing = NO;
-    // 当前选中的值
-    pickerBrowser.currentIndexPath = indexPath;
-    [self.navigationController presentViewController:pickerBrowser animated:YES completion:nil];
-    
-}
 
 - (void)setSelectPickerAssets:(NSArray *)selectPickerAssets{
     NSSet *set = [NSSet setWithArray:selectPickerAssets];
@@ -185,31 +139,14 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
         
         collectionView.contentInset = UIEdgeInsetsMake(5, 0,TOOLBAR_HEIGHT, 0);
         collectionView.collectionViewDelegate = self;
-        [self.view insertSubview:_collectionView = collectionView belowSubview:self.toolBar];
+        [self.view insertSubview:collectionView belowSubview:self.toolBar];
 		collectionView.frame = self.view.bounds;
+        _collectionView = collectionView;
     }
     return _collectionView;
 }
 
-#pragma mark - circle life
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.bounds = [UIScreen mainScreen].bounds;
-    self.view.backgroundColor = [UIColor whiteColor];
-    // 获取相册
-    [self setupAssets];
-    
-    [self addNavBarCancelButton];
-    // 初始化底部ToorBar
-    [self setupToorBar];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self.collectionView reloadData];
-}
 
 #pragma mark - 创建右边取消按钮
 - (void)addNavBarCancelButton{
@@ -257,12 +194,12 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         // 处理
-        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
+//        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
         
         // FIX: 应该加入LGPhotoAssets类型，不应该加入UIImage类型
-        [self.assets addObject:image];
-        [self.selectAssets addObject:image];
-        [self.takePhotoImages addObject:image];
+//        [self.assets addObject:image];
+//        [self.selectAssets addObject:image];
+//        [self.takePhotoImages addObject:image];
         
         NSInteger count = self.selectAssets.count;
         self.makeView.hidden = !count;
@@ -277,31 +214,20 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 #pragma mark -初始化底部ToorBar
-- (void) setupToorBar{
-    UIToolbar *toorBar = [[UIToolbar alloc] init];
-    toorBar.translatesAutoresizingMaskIntoConstraints = NO;
-    toorBar.barStyle = UIBarStyleBlackTranslucent;
-    [self.view addSubview:toorBar];
-    self.toolBar = toorBar;
+- (void)setupToorBar {
     
-    NSDictionary *views = NSDictionaryOfVariableBindings(toorBar);
-    NSString *widthVfl =  @"H:|-0-[toorBar]-0-|";
-    NSString *heightVfl = @"V:[toorBar(44)]-0-|";
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:widthVfl options:0 metrics:0 views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:heightVfl options:0 metrics:0 views:views]];
-    
-    // 左视图 中间距 右视图
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:self.previewBtn];
-    UIBarButtonItem *fiexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:self.sendBtn];
-    
-    toorBar.items = @[leftItem,fiexItem,rightItem];
-    
+    LGPhotoPickerToolBar *toolBar = [[[UINib nibWithNibName:@"LGPhotoPickerToolBar" bundle:nil] instantiateWithOwner:self options:nil] firstObject];
+    CGFloat y = CGRectGetHeight([UIScreen mainScreen].bounds) - TOOLBAR_HEIGHT;
+    CGFloat w = CGRectGetWidth([UIScreen mainScreen].bounds);
+    toolBar.frame = CGRectMake(0, y, w, TOOLBAR_HEIGHT);
+    [self.view addSubview:toolBar];
+    self.toolBar = toolBar;
+
 }
 
 #pragma mark - setter
 
-- (void)setAssetsGroup:(LGPhotoPickerGroup *)assetsGroup{
+- (void)setAssetsGroup:(LGPhotoPickerGroup *)assetsGroup {
     if (!assetsGroup.groupName.length) return ;
     
     _assetsGroup = assetsGroup;
@@ -313,8 +239,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 #pragma mark - LGPhotoPickerCollectionViewDelegate
 
 //cell被点击会调用
-- (void) pickerCollectionCellTouchedIndexPath:(NSIndexPath *)indexPath
-{
+- (void) pickerCollectionCellTouchedIndexPath:(NSIndexPath *)indexPath {
     [self setupPhotoBrowserInCasePreview:NO CurrentIndexPath:indexPath];
 }
 
@@ -336,20 +261,16 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     }
 
     [self updateToolbar];
-    
 }
 
 - (NSArray<LGPhotoAssets *> *)selectedAssestsForPhotoPickerCollectionView:(LGPhotoPickerCollectionView *)collectionView {
     return self.selectAssets;
 }
 
-- (void)updateToolbar
-{
+- (void)updateToolbar {
     NSInteger count = self.selectAssets.count;
-    self.sendBtn.enabled = (count > 0);
-    self.previewBtn.enabled = (count > 0);
-    NSString *title = [NSString stringWithFormat:@"发送(%ld)",(long)count];
-    [self.sendBtn setTitle:title forState:UIControlStateNormal];
+    self.toolBar.addedCount = count;
+    self.toolBar.remainCount = self.configuration.maxSelectCount - count;
 }
 
 #pragma mark - LGPhotoPickerBrowserViewControllerDataSource
@@ -405,15 +326,43 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self sendBtnTouched];
 }
 
-#pragma mark -<Navigation Actions>
-#pragma mark -开启异步通知
+#pragma mark - Actions
+
 - (void) cancelBtnTouched{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void) sendBtnTouched {
 	[[NSNotificationCenter defaultCenter] postNotificationName:PICKER_TAKE_DONE object:nil userInfo:@{@"selectAssets":self.selectAssets,@"isOriginal":@(self.isOriginal)}];
 	NSLog(@"%@",@(self.isOriginal));
     [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+#pragma mark - Private Method
+/**
+ *  跳转照片浏览器
+ *
+ *  @param preview YES - 从‘预览’按钮进去，浏览器显示的时被选中的照片
+ *                  NO - 点击cell进去，浏览器显示所有照片
+ *  @param CurrentIndexPath 进入浏览器后展示图片的位置
+ */
+- (void) setupPhotoBrowserInCasePreview:(BOOL)preview
+                       CurrentIndexPath:(NSIndexPath *)indexPath{
+    
+    self.isPreview = preview;
+    // 图片游览器
+    LGPhotoPickerBrowserViewController *pickerBrowser = [[LGPhotoPickerBrowserViewController alloc] init];
+    pickerBrowser.showType = self.configuration.showType;
+    pickerBrowser.delegate = self;
+    pickerBrowser.dataSource = self;
+    pickerBrowser.maxCount = self.configuration.maxSelectCount;
+    pickerBrowser.isOriginal = self.isOriginal;
+    pickerBrowser.selectedAssets = [self.selectAssets mutableCopy];
+    pickerBrowser.editing = NO;
+    // 当前选中的值
+    pickerBrowser.currentIndexPath = indexPath;
+    [self.navigationController presentViewController:pickerBrowser animated:YES completion:nil];
+    
 }
 
 @end
