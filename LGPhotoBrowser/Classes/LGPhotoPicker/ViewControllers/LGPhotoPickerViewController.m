@@ -47,6 +47,7 @@
 #pragma mark - init Action
 - (void) createNavigationController{
     _groupVc = [[LGPhotoPickerGroupViewController alloc] initWithConfiguration:self.configuration];
+
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_groupVc];
     
     nav.view.frame = self.view.bounds;
@@ -68,14 +69,12 @@
 - (void)done:(NSNotification *)note{
     NSArray *selectArray =  note.userInfo[@"selectAssets"];
     self.isOriginal = [note.userInfo[@"isOriginal"] boolValue];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self.delegate respondsToSelector:@selector(pickerViewControllerDoneAsstes:isOriginal:)]) {
-            [self.delegate pickerViewControllerDoneAsstes:selectArray  isOriginal:self.isOriginal];
-        }else if (self.callBack){
-            self.callBack(selectArray);
-        }
-        [self dismissViewControllerAnimated:YES completion:nil];
-    });
+    if ([self.delegate respondsToSelector:@selector(pickerViewControllerDoneAsstes:isOriginal:)]) {
+        [self.delegate pickerViewControllerDoneAsstes:selectArray  isOriginal:self.isOriginal];
+    } else if (self.callBack) {
+        self.callBack(selectArray);
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setDelegate:(id<LGPhotoPickerViewControllerDelegate>)delegate{

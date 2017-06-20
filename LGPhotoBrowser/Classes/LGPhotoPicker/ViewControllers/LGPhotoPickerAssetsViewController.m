@@ -145,7 +145,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 
-
 #pragma mark - 创建右边取消按钮
 - (void)addNavBarCancelButton{
 	UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -316,7 +315,7 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     };
     [self.view addSubview:toolBar];
     self.toolBar = toolBar;
-    
+    [self updateToolbar];
 }
 
 /**
