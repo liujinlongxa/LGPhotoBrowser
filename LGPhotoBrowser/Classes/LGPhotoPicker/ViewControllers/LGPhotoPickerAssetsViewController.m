@@ -119,7 +119,15 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     [self updateToolbar];
 }
 
-#pragma mark collectionView
+- (void)setAssetsGroup:(LGPhotoPickerGroup *)assetsGroup {
+    if (!assetsGroup.groupName.length) return ;
+    
+    _assetsGroup = assetsGroup;
+    
+    self.title = assetsGroup.groupName;
+    
+}
+
 - (LGPhotoPickerCollectionView *)collectionView{
     if (!_collectionView) {
         
@@ -156,7 +164,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 	self.navigationItem.rightBarButtonItem = temporaryBarButtonItem;
 }
 
-#pragma mark 初始化所有的组
 - (void) setupAssets{
     if (!self.assets) {
         self.assets = [NSMutableArray array];
@@ -213,28 +220,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     }
 }
 
-#pragma mark -初始化底部ToorBar
-- (void)setupToorBar {
-    
-    LGPhotoPickerToolBar *toolBar = [[[UINib nibWithNibName:@"LGPhotoPickerToolBar" bundle:nil] instantiateWithOwner:self options:nil] firstObject];
-    CGFloat y = CGRectGetHeight([UIScreen mainScreen].bounds) - TOOLBAR_HEIGHT;
-    CGFloat w = CGRectGetWidth([UIScreen mainScreen].bounds);
-    toolBar.frame = CGRectMake(0, y, w, TOOLBAR_HEIGHT);
-    [self.view addSubview:toolBar];
-    self.toolBar = toolBar;
-
-}
-
-#pragma mark - setter
-
-- (void)setAssetsGroup:(LGPhotoPickerGroup *)assetsGroup {
-    if (!assetsGroup.groupName.length) return ;
-    
-    _assetsGroup = assetsGroup;
-    
-    self.title = assetsGroup.groupName;
-
-}
 
 #pragma mark - LGPhotoPickerCollectionViewDelegate
 
@@ -339,6 +324,22 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 }
 
 #pragma mark - Private Method
+
+- (void)setupToorBar {
+    
+    LGPhotoPickerToolBar *toolBar = [[[UINib nibWithNibName:@"LGPhotoPickerToolBar" bundle:nil] instantiateWithOwner:self options:nil] firstObject];
+    CGFloat y = CGRectGetHeight([UIScreen mainScreen].bounds) - TOOLBAR_HEIGHT;
+    CGFloat w = CGRectGetWidth([UIScreen mainScreen].bounds);
+    toolBar.frame = CGRectMake(0, y, w, TOOLBAR_HEIGHT);
+    __weak typeof(self) wSelf = self;
+    toolBar.clickFinishBlock = ^{
+        [wSelf sendBtnTouched];
+    };
+    [self.view addSubview:toolBar];
+    self.toolBar = toolBar;
+    
+}
+
 /**
  *  跳转照片浏览器
  *

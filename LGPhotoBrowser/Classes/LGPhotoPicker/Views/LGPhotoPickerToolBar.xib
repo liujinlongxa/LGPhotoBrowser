@@ -27,6 +27,9 @@
                     <state key="normal" title=" 完成">
                         <color key="titleColor" red="0.8901960784313725" green="0.61176470588235299" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <connections>
+                        <action selector="clickFinishButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="RLi-JE-lUx"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1r7-6y-eLI">
                     <rect key="frame" x="0.0" y="0.0" width="328" height="1"/>

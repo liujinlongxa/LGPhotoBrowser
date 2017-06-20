@@ -26,4 +26,10 @@
     self.remainCountLabel.text = [NSString stringWithFormat:@"%@", @(remainCount)];
 }
 
+- (IBAction)clickFinishButton:(id)sender {
+    if (self.clickFinishBlock) {
+        self.clickFinishBlock();
+    }
+}
+
 @end
