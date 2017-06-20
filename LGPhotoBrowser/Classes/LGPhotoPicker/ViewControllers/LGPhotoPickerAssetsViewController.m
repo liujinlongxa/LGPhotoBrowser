@@ -28,12 +28,8 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 // View
 // 相片View
 @property (nonatomic , strong) LGPhotoPickerCollectionView *collectionView;
-// 标记View
-@property (nonatomic, weak)   UILabel *makeView;
-@property (nonatomic, strong) UIButton *sendBtn;
-@property (nonatomic, strong) UIButton *previewBtn;
+
 @property (nonatomic, weak)   LGPhotoPickerToolBar *toolBar;
-@property (nonatomic, assign) NSUInteger privateTempMaxCount;
 @property (nonatomic, strong) NSMutableArray *assets;
 @property (nonatomic, strong) NSMutableArray<__kindof LGPhotoAssets*> *selectAssets;
 @property (nonatomic, strong) NSMutableArray *takePhotoImages;
@@ -110,12 +106,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
     }
     
     self.selectAssets = [selectPickerAssets mutableCopy];
-    NSInteger count = self.selectAssets.count;
-    self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
-    self.sendBtn.enabled = (count > 0);
-    self.previewBtn.enabled = (count > 0);
-    
     [self updateToolbar];
 }
 
@@ -208,12 +198,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 //        [self.selectAssets addObject:image];
 //        [self.takePhotoImages addObject:image];
         
-        NSInteger count = self.selectAssets.count;
-        self.makeView.hidden = !count;
-        self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
-        self.sendBtn.enabled = (count > 0);
-        self.previewBtn.enabled = (count > 0);
-        
         [picker dismissViewControllerAnimated:YES completion:nil];
     }else{
         NSLog(@"请在真机使用!");
@@ -295,11 +279,6 @@ static NSString *const _identifier = @"toolBarThumbCollectionViewCell";
 - (void)photoBrowserWillExit:(LGPhotoPickerBrowserViewController *)pickerBrowser
 {
     self.selectAssets = [NSMutableArray arrayWithArray:pickerBrowser.selectedAssets];
-    NSInteger count = self.selectAssets.count;
-    self.makeView.hidden = !count;
-    self.makeView.text = [NSString stringWithFormat:@"%ld",(long)count];
-    self.sendBtn.enabled = (count > 0);
-    self.previewBtn.enabled = (count > 0);
     self.isOriginal = pickerBrowser.isOriginal;
     [self updateToolbar];
 }
